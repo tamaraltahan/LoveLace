@@ -1,5 +1,6 @@
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 var shiftAmount;
+//bruh moment
 
 function break_caesar_cipher(ciphertext, known_word) {
     known_word = known_word.toUpperCase();
@@ -14,7 +15,7 @@ function break_caesar_cipher(ciphertext, known_word) {
         }
     }
 
-    var decryptedList = decrypt(wordList,known_word);
+    var decryptedList = decrypt(wordList,known_word,sameCharList);
     for(i = 0; i < decryptedList.length; i++){
         plaintext += decryptedList[i] + " ";
     }
@@ -29,21 +30,25 @@ function break_caesar_cipher(ciphertext, known_word) {
  * @param {list of all words} stringList 
  * @param {given word} keyword
  */
-function decrypt(stringList, keyword){ 
+function decrypt(stringList, keyword, sameCharList){ 
     var numList = [];
+    var sameCharNumList = [];
+
+    //for all words of the same length as they keywords
+    //rotate them all until the characters match
+    //then test if the words match
+    for(i = 0; i < sameCharNumList.length; i++){
+        sameCharNumList[i] = getCharacterValues(sameCharList[i]);
+        setShiftAmount(sameCharNumList[i],keyword);
+        if(testDistance(sameCharNumList[i],keyword)){
+            break;
+        }
+    }
 
     //first i numericize all the strings
     //I could just do this sequentially until the correct string is found, but that's more effort
     for(i = 0; i < stringList.length; i++){
         numList[i] = getCharacterValues(stringList[i]);
-    }
-
-    //then I test each string to find the shift amount
-    for(i = 0; i < list.length; i++){
-        setShiftAmount(stringList[i],keyword)
-        if(testDistance(stringList[i],known_word)){
-            break; //match!
-        }
     }
 
     //now shift each word in the string by the appropriate ammount
@@ -88,7 +93,7 @@ function getCharacterValues(word){
                 charNumber = 0
             }
         }
-        list += charNumber
+        list[i] = charNumber;
     }
     return list
 }
